@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+service AuthenticateService {
+    rpc Register(RegisterRequest) returns (RegisterResponse);
+    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
+}
+
+message RegisterRequest {
+    string login = 1;
+    bytes authenticate_password = 2;
+
+    bytes rsa_public_key = 3;
+    bytes rsa_private_key_protected = 4;
+}
+
+message RegisterResponse {
+    string user_id = 1;
+}
+
+message LoginRequest {
+    string login = 1;
+    bytes authenticate_password = 2;
+}
+
+message LoginResponse {
+    string user_id = 1;
+    bytes rsa_private_key_protected = 2;
+
+    string access_token = 3;
+}
+
+message LogoutRequest {
+    string access_token = 1;
+}
+
+message LogoutResponse {
+}

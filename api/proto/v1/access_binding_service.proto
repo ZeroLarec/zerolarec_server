@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+service AccessBindingService {
+    rpc ListAccessBindings(ListAccessBindingsRequest) returns (ListAccessBindingsResponce);
+    rpc GetAccessBinding(GetAccessBindingRequest) returns (AccessBinding);
+    rpc AddAccessBinding(AddAccessBindingRequest) returns (AccessBinding);
+    rpc DeleteAccessBinding(DeleteAccessBindingRequest) returns (DeleteAccessBindingResponce);
+}
+
+message ListAccessBindingsRequest {
+    message Filter {
+        optional AccessBinding.Subject subject = 1;
+        optional AccessBinding.Resource resource = 2;
+    }
+
+    optional Filter filter = 1;
+    optional int32 limit = 2;
+    optional int32 offset = 3;
+}
+
+message ListAccessBindingsResponce {
+    repeated AccessBinding accessBindings = 1;
+}
+
+message GetAccessBindingRequest {
+    string access_binding_id = 1;
+}
+
+message AddAccessBindingRequest {
+    AccessBinding.Subject subject = 1;
+    AccessBinding.Resource object = 2;
+    AccessBinding.Role role = 3;
+}
+
+message DeleteAccessBindingRequest {
+    string access_binding_id = 1;
+}
+
+message DeleteAccessBindingResponce {
+}
+
+message AccessBinding {
+    message Subject {
+        enum Kind {
+            KIND_UNDEFINED = 0;
+            USER = 1;
+        }
+        
+        string subject_id = 2;
+        Kind kind = 1;
+    }
+    message Resource {
+        enum Kind {
+            KIND_UNDEFINED = 0;
+            SECRET = 1;
+            VAULT = 2;
+        }
+        
+        string resource_id = 2;
+        Kind kind = 1;
+    }
+    enum Role {
+        ROLE_UNDEFINIED = 0;
+        GUEST = 1;
+        VIEWER = 2;
+        EDITOR = 3;
+        ADMIN = 4;
+    }
+    
+    string access_binding_id =1;
+    
+    Subject subject = 2;
+    Resource resource = 3;
+    Role role = 4;
+}

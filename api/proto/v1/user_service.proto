@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+
+service UserService {
+    rpc GetUser(GetUserRequest) returns (User);
+}
+
+message RegisterUserRequest {
+    string login = 1;
+}
+
+message GetUserRequest {
+    string user_id = 1;
+}
+
+message User {
+    string user_id = 1;
+    
+    string login = 2;
+    bytes rsa_public_key = 3; 
+}
