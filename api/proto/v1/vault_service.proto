@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+service VaultService {
+    rpc ListVaults(ListVaultsRequest) returns (ListVaultsResponse);    
+    rpc CreateVault(CreateVaultRequest) returns (Vault);
+    rpc DeleteVault(DeleteVaultRequest) returns (DeleteVaultResponse);
+    
+    rpc ListVaultMembers(ListVaultMembersRequest) returns (ListVaultMembersResponse);
+    rpc GetVaultSymmetricKey(GetVaultSymmetricKeyRequest) returns (GetVaultSymmetricKeyResponse);
+    rpc AddUserToVault(AddUserToVaultRequest) returns (AddUserToVaultResponse);
+    rpc RemoveUserFromVault(RemoveUserFromVaultRequest) returns (RemoveUserFromVaultResponse);
+}
+
+
+
+message ListVaultsRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+}
+message ListVaultsResponse {
+    repeated Vault Vaults = 1;
+}
+
+
+message CreateVaultRequest {
+    string name = 1;
+    string description = 2;
+    string protected_symmetric_key = 3;
+}
+
+
+message DeleteVaultRequest {
+    string vault_id = 1;
+}
+message DeleteVaultResponse {
+}
+
+
+message ListVaultMembersRequest {
+    string vault_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+}
+message ListVaultMembersResponse {
+    repeated string user_ids = 1;
+}
+
+message GetVaultSymmetricKeyRequest {
+    string vault_id = 1;
+}
+message GetVaultSymmetricKeyResponse {
+    bytes vault_symmetric_key_protected = 3;
+}
+
+message AddUserToVaultRequest {
+    string vault_id = 1;
+    string user_id = 2;
+    string protected_symmetric_key = 3;
+}
+message AddUserToVaultResponse {
+}
+
+message RemoveUserFromVaultRequest {
+    string vault_id = 1;
+    string user_id = 2;
+}
+message RemoveUserFromVaultResponse {
+}
+
+message Vault {
+    string vault_id = 1;
+    
+    string name = 2;
+    string description = 3;
+}
+

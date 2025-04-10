@@ -7,10 +7,12 @@ option go_package = "/apiv1";
 
 service UserService {
     rpc GetUser(GetUserRequest) returns (User);
+    rpc CreateUser(CreateUserRequest) returns (User);
 }
 
-message RegisterUserRequest {
+message CreateUserRequest {
     string login = 1;
+    bytes rsa_public_key = 2;
 }
 
 message GetUserRequest {
