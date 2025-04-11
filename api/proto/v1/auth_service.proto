@@ -12,30 +12,23 @@ service AuthenticateService {
 
 message RegisterRequest {
     string login = 1;
-    bytes authenticate_password = 2;
-
-    bytes rsa_public_key = 3;
-    bytes rsa_private_key_protected = 4;
+    string password = 2;
 }
 
 message RegisterResponse {
-    string user_id = 1;
+    string access_token = 1;
 }
 
 message LoginRequest {
     string login = 1;
-    bytes authenticate_password = 2;
+    string password = 2;
 }
 
 message LoginResponse {
-    string user_id = 1;
-    bytes rsa_private_key_protected = 2;
-
-    string access_token = 3;
+    string access_token = 1;
 }
 
 message LogoutRequest {
-    string access_token = 1;
 }
 
 message LogoutResponse {
