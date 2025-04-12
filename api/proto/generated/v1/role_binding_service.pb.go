@@ -172,10 +172,11 @@ func (RoleBinding_Resource_Kind) EnumDescriptor() ([]byte, []int) {
 }
 
 type ListRoleBindingsRequest struct {
-	state         protoimpl.MessageState          `protogen:"open.v1"`
-	Filter        *ListRoleBindingsRequest_Filter `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
-	Limit         *int32                          `protobuf:"varint,2,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
-	Offset        *int32                          `protobuf:"varint,3,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subject       *RoleBinding_Subject   `protobuf:"bytes,1,opt,name=subject,proto3,oneof" json:"subject,omitempty"`
+	Resource      *RoleBinding_Resource  `protobuf:"bytes,2,opt,name=resource,proto3,oneof" json:"resource,omitempty"`
+	Limit         *int32                 `protobuf:"varint,3,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
+	Offset        *int32                 `protobuf:"varint,4,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -210,9 +211,16 @@ func (*ListRoleBindingsRequest) Descriptor() ([]byte, []int) {
 	return file_v1_role_binding_service_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ListRoleBindingsRequest) GetFilter() *ListRoleBindingsRequest_Filter {
+func (x *ListRoleBindingsRequest) GetSubject() *RoleBinding_Subject {
 	if x != nil {
-		return x.Filter
+		return x.Subject
+	}
+	return nil
+}
+
+func (x *ListRoleBindingsRequest) GetResource() *RoleBinding_Resource {
+	if x != nil {
+		return x.Resource
 	}
 	return nil
 }
@@ -527,58 +535,6 @@ func (x *RoleBinding) GetRole() RoleBinding_Role {
 	return RoleBinding_ROLE_UNDEFINIED
 }
 
-type ListRoleBindingsRequest_Filter struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Subject       *RoleBinding_Subject   `protobuf:"bytes,1,opt,name=subject,proto3,oneof" json:"subject,omitempty"`
-	Resource      *RoleBinding_Resource  `protobuf:"bytes,2,opt,name=resource,proto3,oneof" json:"resource,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListRoleBindingsRequest_Filter) Reset() {
-	*x = ListRoleBindingsRequest_Filter{}
-	mi := &file_v1_role_binding_service_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListRoleBindingsRequest_Filter) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListRoleBindingsRequest_Filter) ProtoMessage() {}
-
-func (x *ListRoleBindingsRequest_Filter) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_role_binding_service_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListRoleBindingsRequest_Filter.ProtoReflect.Descriptor instead.
-func (*ListRoleBindingsRequest_Filter) Descriptor() ([]byte, []int) {
-	return file_v1_role_binding_service_proto_rawDescGZIP(), []int{0, 0}
-}
-
-func (x *ListRoleBindingsRequest_Filter) GetSubject() *RoleBinding_Subject {
-	if x != nil {
-		return x.Subject
-	}
-	return nil
-}
-
-func (x *ListRoleBindingsRequest_Filter) GetResource() *RoleBinding_Resource {
-	if x != nil {
-		return x.Resource
-	}
-	return nil
-}
-
 type RoleBinding_Subject struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	Kind          RoleBinding_Subject_Kind `protobuf:"varint,1,opt,name=kind,proto3,enum=larec.RoleBinding_Subject_Kind" json:"kind,omitempty"`
@@ -589,7 +545,7 @@ type RoleBinding_Subject struct {
 
 func (x *RoleBinding_Subject) Reset() {
 	*x = RoleBinding_Subject{}
-	mi := &file_v1_role_binding_service_proto_msgTypes[8]
+	mi := &file_v1_role_binding_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -601,7 +557,7 @@ func (x *RoleBinding_Subject) String() string {
 func (*RoleBinding_Subject) ProtoMessage() {}
 
 func (x *RoleBinding_Subject) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_role_binding_service_proto_msgTypes[8]
+	mi := &file_v1_role_binding_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -641,7 +597,7 @@ type RoleBinding_Resource struct {
 
 func (x *RoleBinding_Resource) Reset() {
 	*x = RoleBinding_Resource{}
-	mi := &file_v1_role_binding_service_proto_msgTypes[9]
+	mi := &file_v1_role_binding_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -653,7 +609,7 @@ func (x *RoleBinding_Resource) String() string {
 func (*RoleBinding_Resource) ProtoMessage() {}
 
 func (x *RoleBinding_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_role_binding_service_proto_msgTypes[9]
+	mi := &file_v1_role_binding_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -687,18 +643,15 @@ var File_v1_role_binding_service_proto protoreflect.FileDescriptor
 
 const file_v1_role_binding_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1dv1/role_binding_service.proto\x12\x05larec\"\xd2\x02\n" +
-	"\x17ListRoleBindingsRequest\x12B\n" +
-	"\x06filter\x18\x01 \x01(\v2%.larec.ListRoleBindingsRequest.FilterH\x00R\x06filter\x88\x01\x01\x12\x19\n" +
-	"\x05limit\x18\x02 \x01(\x05H\x01R\x05limit\x88\x01\x01\x12\x1b\n" +
-	"\x06offset\x18\x03 \x01(\x05H\x02R\x06offset\x88\x01\x01\x1a\x9a\x01\n" +
-	"\x06Filter\x129\n" +
+	"\x1dv1/role_binding_service.proto\x12\x05larec\"\xf8\x01\n" +
+	"\x17ListRoleBindingsRequest\x129\n" +
 	"\asubject\x18\x01 \x01(\v2\x1a.larec.RoleBinding.SubjectH\x00R\asubject\x88\x01\x01\x12<\n" +
-	"\bresource\x18\x02 \x01(\v2\x1b.larec.RoleBinding.ResourceH\x01R\bresource\x88\x01\x01B\n" +
+	"\bresource\x18\x02 \x01(\v2\x1b.larec.RoleBinding.ResourceH\x01R\bresource\x88\x01\x01\x12\x19\n" +
+	"\x05limit\x18\x03 \x01(\x05H\x02R\x05limit\x88\x01\x01\x12\x1b\n" +
+	"\x06offset\x18\x04 \x01(\x05H\x03R\x06offset\x88\x01\x01B\n" +
 	"\n" +
 	"\b_subjectB\v\n" +
-	"\t_resourceB\t\n" +
-	"\a_filterB\b\n" +
+	"\t_resourceB\b\n" +
 	"\x06_limitB\t\n" +
 	"\a_offset\"R\n" +
 	"\x18ListRoleBindingsResponce\x126\n" +
@@ -761,48 +714,46 @@ func file_v1_role_binding_service_proto_rawDescGZIP() []byte {
 }
 
 var file_v1_role_binding_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_v1_role_binding_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_v1_role_binding_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_v1_role_binding_service_proto_goTypes = []any{
-	(RoleBinding_Role)(0),                  // 0: larec.RoleBinding.Role
-	(RoleBinding_Subject_Kind)(0),          // 1: larec.RoleBinding.Subject.Kind
-	(RoleBinding_Resource_Kind)(0),         // 2: larec.RoleBinding.Resource.Kind
-	(*ListRoleBindingsRequest)(nil),        // 3: larec.ListRoleBindingsRequest
-	(*ListRoleBindingsResponce)(nil),       // 4: larec.ListRoleBindingsResponce
-	(*GetRoleBindingRequest)(nil),          // 5: larec.GetRoleBindingRequest
-	(*AddRoleBindingRequest)(nil),          // 6: larec.AddRoleBindingRequest
-	(*DeleteRoleBindingRequest)(nil),       // 7: larec.DeleteRoleBindingRequest
-	(*DeleteRoleBindingResponce)(nil),      // 8: larec.DeleteRoleBindingResponce
-	(*RoleBinding)(nil),                    // 9: larec.RoleBinding
-	(*ListRoleBindingsRequest_Filter)(nil), // 10: larec.ListRoleBindingsRequest.Filter
-	(*RoleBinding_Subject)(nil),            // 11: larec.RoleBinding.Subject
-	(*RoleBinding_Resource)(nil),           // 12: larec.RoleBinding.Resource
+	(RoleBinding_Role)(0),             // 0: larec.RoleBinding.Role
+	(RoleBinding_Subject_Kind)(0),     // 1: larec.RoleBinding.Subject.Kind
+	(RoleBinding_Resource_Kind)(0),    // 2: larec.RoleBinding.Resource.Kind
+	(*ListRoleBindingsRequest)(nil),   // 3: larec.ListRoleBindingsRequest
+	(*ListRoleBindingsResponce)(nil),  // 4: larec.ListRoleBindingsResponce
+	(*GetRoleBindingRequest)(nil),     // 5: larec.GetRoleBindingRequest
+	(*AddRoleBindingRequest)(nil),     // 6: larec.AddRoleBindingRequest
+	(*DeleteRoleBindingRequest)(nil),  // 7: larec.DeleteRoleBindingRequest
+	(*DeleteRoleBindingResponce)(nil), // 8: larec.DeleteRoleBindingResponce
+	(*RoleBinding)(nil),               // 9: larec.RoleBinding
+	(*RoleBinding_Subject)(nil),       // 10: larec.RoleBinding.Subject
+	(*RoleBinding_Resource)(nil),      // 11: larec.RoleBinding.Resource
 }
 var file_v1_role_binding_service_proto_depIdxs = []int32{
-	10, // 0: larec.ListRoleBindingsRequest.filter:type_name -> larec.ListRoleBindingsRequest.Filter
-	9,  // 1: larec.ListRoleBindingsResponce.RoleBindings:type_name -> larec.RoleBinding
-	11, // 2: larec.AddRoleBindingRequest.subject:type_name -> larec.RoleBinding.Subject
-	12, // 3: larec.AddRoleBindingRequest.object:type_name -> larec.RoleBinding.Resource
-	0,  // 4: larec.AddRoleBindingRequest.role:type_name -> larec.RoleBinding.Role
-	11, // 5: larec.RoleBinding.subject:type_name -> larec.RoleBinding.Subject
-	12, // 6: larec.RoleBinding.resource:type_name -> larec.RoleBinding.Resource
-	0,  // 7: larec.RoleBinding.role:type_name -> larec.RoleBinding.Role
-	11, // 8: larec.ListRoleBindingsRequest.Filter.subject:type_name -> larec.RoleBinding.Subject
-	12, // 9: larec.ListRoleBindingsRequest.Filter.resource:type_name -> larec.RoleBinding.Resource
-	1,  // 10: larec.RoleBinding.Subject.kind:type_name -> larec.RoleBinding.Subject.Kind
-	2,  // 11: larec.RoleBinding.Resource.kind:type_name -> larec.RoleBinding.Resource.Kind
-	3,  // 12: larec.RoleBindingService.ListRoleBindings:input_type -> larec.ListRoleBindingsRequest
-	5,  // 13: larec.RoleBindingService.GetRoleBinding:input_type -> larec.GetRoleBindingRequest
-	6,  // 14: larec.RoleBindingService.AddRoleBinding:input_type -> larec.AddRoleBindingRequest
-	7,  // 15: larec.RoleBindingService.DeleteRoleBinding:input_type -> larec.DeleteRoleBindingRequest
-	4,  // 16: larec.RoleBindingService.ListRoleBindings:output_type -> larec.ListRoleBindingsResponce
-	9,  // 17: larec.RoleBindingService.GetRoleBinding:output_type -> larec.RoleBinding
-	9,  // 18: larec.RoleBindingService.AddRoleBinding:output_type -> larec.RoleBinding
-	8,  // 19: larec.RoleBindingService.DeleteRoleBinding:output_type -> larec.DeleteRoleBindingResponce
-	16, // [16:20] is the sub-list for method output_type
-	12, // [12:16] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	10, // 0: larec.ListRoleBindingsRequest.subject:type_name -> larec.RoleBinding.Subject
+	11, // 1: larec.ListRoleBindingsRequest.resource:type_name -> larec.RoleBinding.Resource
+	9,  // 2: larec.ListRoleBindingsResponce.RoleBindings:type_name -> larec.RoleBinding
+	10, // 3: larec.AddRoleBindingRequest.subject:type_name -> larec.RoleBinding.Subject
+	11, // 4: larec.AddRoleBindingRequest.object:type_name -> larec.RoleBinding.Resource
+	0,  // 5: larec.AddRoleBindingRequest.role:type_name -> larec.RoleBinding.Role
+	10, // 6: larec.RoleBinding.subject:type_name -> larec.RoleBinding.Subject
+	11, // 7: larec.RoleBinding.resource:type_name -> larec.RoleBinding.Resource
+	0,  // 8: larec.RoleBinding.role:type_name -> larec.RoleBinding.Role
+	1,  // 9: larec.RoleBinding.Subject.kind:type_name -> larec.RoleBinding.Subject.Kind
+	2,  // 10: larec.RoleBinding.Resource.kind:type_name -> larec.RoleBinding.Resource.Kind
+	3,  // 11: larec.RoleBindingService.ListRoleBindings:input_type -> larec.ListRoleBindingsRequest
+	5,  // 12: larec.RoleBindingService.GetRoleBinding:input_type -> larec.GetRoleBindingRequest
+	6,  // 13: larec.RoleBindingService.AddRoleBinding:input_type -> larec.AddRoleBindingRequest
+	7,  // 14: larec.RoleBindingService.DeleteRoleBinding:input_type -> larec.DeleteRoleBindingRequest
+	4,  // 15: larec.RoleBindingService.ListRoleBindings:output_type -> larec.ListRoleBindingsResponce
+	9,  // 16: larec.RoleBindingService.GetRoleBinding:output_type -> larec.RoleBinding
+	9,  // 17: larec.RoleBindingService.AddRoleBinding:output_type -> larec.RoleBinding
+	8,  // 18: larec.RoleBindingService.DeleteRoleBinding:output_type -> larec.DeleteRoleBindingResponce
+	15, // [15:19] is the sub-list for method output_type
+	11, // [11:15] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_v1_role_binding_service_proto_init() }
@@ -811,14 +762,13 @@ func file_v1_role_binding_service_proto_init() {
 		return
 	}
 	file_v1_role_binding_service_proto_msgTypes[0].OneofWrappers = []any{}
-	file_v1_role_binding_service_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_role_binding_service_proto_rawDesc), len(file_v1_role_binding_service_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   10,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

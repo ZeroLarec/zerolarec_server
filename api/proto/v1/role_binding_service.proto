@@ -12,14 +12,12 @@ service RoleBindingService {
 }
 
 message ListRoleBindingsRequest {
-    message Filter {
-        optional RoleBinding.Subject subject = 1;
-        optional RoleBinding.Resource resource = 2;
-    }
+    optional RoleBinding.Subject subject = 1;
+    optional RoleBinding.Resource resource = 2;
+    
 
-    optional Filter filter = 1;
-    optional int32 limit = 2;
-    optional int32 offset = 3;
+    optional int32 limit = 3;
+    optional int32 offset = 4;
 }
 
 message ListRoleBindingsResponce {

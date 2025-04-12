@@ -21,7 +21,6 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	AuthenticateService_Register_FullMethodName = "/larec.AuthenticateService/Register"
 	AuthenticateService_Login_FullMethodName    = "/larec.AuthenticateService/Login"
-	AuthenticateService_Logout_FullMethodName   = "/larec.AuthenticateService/Logout"
 )
 
 // AuthenticateServiceClient is the client API for AuthenticateService service.
@@ -30,7 +29,6 @@ const (
 type AuthenticateServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 }
 
 type authenticateServiceClient struct {
@@ -61,23 +59,12 @@ func (c *authenticateServiceClient) Login(ctx context.Context, in *LoginRequest,
 	return out, nil
 }
 
-func (c *authenticateServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LogoutResponse)
-	err := c.cc.Invoke(ctx, AuthenticateService_Logout_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AuthenticateServiceServer is the server API for AuthenticateService service.
 // All implementations must embed UnimplementedAuthenticateServiceServer
 // for forward compatibility.
 type AuthenticateServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	mustEmbedUnimplementedAuthenticateServiceServer()
 }
 
@@ -93,9 +80,6 @@ func (UnimplementedAuthenticateServiceServer) Register(context.Context, *Registe
 }
 func (UnimplementedAuthenticateServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
-func (UnimplementedAuthenticateServiceServer) Logout(context.Context, *LogoutRequest) (*LogoutResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedAuthenticateServiceServer) mustEmbedUnimplementedAuthenticateServiceServer() {}
 func (UnimplementedAuthenticateServiceServer) testEmbeddedByValue()                             {}
@@ -154,24 +138,6 @@ func _AuthenticateService_Login_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticateService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogoutRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticateServiceServer).Logout(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticateService_Logout_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticateServiceServer).Logout(ctx, req.(*LogoutRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AuthenticateService_ServiceDesc is the grpc.ServiceDesc for AuthenticateService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -186,10 +152,6 @@ var AuthenticateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _AuthenticateService_Login_Handler,
-		},
-		{
-			MethodName: "Logout",
-			Handler:    _AuthenticateService_Logout_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

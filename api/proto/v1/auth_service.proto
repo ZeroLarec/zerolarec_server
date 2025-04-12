@@ -4,10 +4,11 @@ package larec;
 
 option go_package = "/apiv1";
 
+import "v1/user_service.proto";
+
 service AuthenticateService {
     rpc Register(RegisterRequest) returns (RegisterResponse);
     rpc Login(LoginRequest) returns (LoginResponse);
-    rpc Logout(LogoutRequest) returns (LogoutResponse);
 }
 
 message RegisterRequest {
@@ -17,6 +18,7 @@ message RegisterRequest {
 
 message RegisterResponse {
     string access_token = 1;
+    User user = 2;
 }
 
 message LoginRequest {
@@ -26,10 +28,4 @@ message LoginRequest {
 
 message LoginResponse {
     string access_token = 1;
-}
-
-message LogoutRequest {
-}
-
-message LogoutResponse {
 }

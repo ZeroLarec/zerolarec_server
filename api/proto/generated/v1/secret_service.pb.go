@@ -240,8 +240,8 @@ func (x *CreateSecretRequest) GetData() map[string]*SecretData {
 type UpdateSecretRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecretId      string                 `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Data          map[string]*SecretData `protobuf:"bytes,4,rep,name=data,proto3" json:"data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -285,15 +285,15 @@ func (x *UpdateSecretRequest) GetSecretId() string {
 }
 
 func (x *UpdateSecretRequest) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+	if x != nil {
+		return x.Name
 	}
 	return ""
 }
 
 func (x *UpdateSecretRequest) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -533,17 +533,15 @@ const file_v1_secret_service_proto_rawDesc = "" +
 	"\x04data\x18\x04 \x03(\v2$.larec.CreateSecretRequest.DataEntryR\x04data\x1aJ\n" +
 	"\tDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12'\n" +
-	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"\x91\x02\n" +
+	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"\xee\x01\n" +
 	"\x13UpdateSecretRequest\x12\x1b\n" +
-	"\tsecret_id\x18\x01 \x01(\tR\bsecretId\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x128\n" +
+	"\tsecret_id\x18\x01 \x01(\tR\bsecretId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x128\n" +
 	"\x04data\x18\x04 \x03(\v2$.larec.UpdateSecretRequest.DataEntryR\x04data\x1aJ\n" +
 	"\tDataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12'\n" +
-	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01B\a\n" +
-	"\x05_nameB\x0e\n" +
-	"\f_description\"2\n" +
+	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"2\n" +
 	"\x13DeleteSecretRequest\x12\x1b\n" +
 	"\tSecret_id\x18\x01 \x01(\tR\bSecretId\"\x16\n" +
 	"\x14DeleteSecretResponce\"\xef\x01\n" +
@@ -624,7 +622,6 @@ func file_v1_secret_service_proto_init() {
 	if File_v1_secret_service_proto != nil {
 		return
 	}
-	file_v1_secret_service_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
