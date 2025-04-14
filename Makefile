@@ -9,4 +9,4 @@ generate_proto:
 	./api/proto/v1/*.proto         
 
 clean:
-	rm -rf ./api/proto/generated
+	rm -rf $(PROTO_GEN_PATH)
