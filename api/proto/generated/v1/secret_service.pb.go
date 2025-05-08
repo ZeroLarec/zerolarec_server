@@ -9,6 +9,7 @@ package apiv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -127,7 +128,8 @@ func (x *ListSecretsResponse) GetSecrets() []*Secret {
 
 type GetSecretRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SecretId      string                 `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
+	VaultId       string                 `protobuf:"bytes,1,opt,name=vault_id,json=vaultId,proto3" json:"vault_id,omitempty"`
+	SecretId      string                 `protobuf:"bytes,2,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -162,6 +164,13 @@ func (*GetSecretRequest) Descriptor() ([]byte, []int) {
 	return file_v1_secret_service_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *GetSecretRequest) GetVaultId() string {
+	if x != nil {
+		return x.VaultId
+	}
+	return ""
+}
+
 func (x *GetSecretRequest) GetSecretId() string {
 	if x != nil {
 		return x.SecretId
@@ -174,7 +183,7 @@ type CreateSecretRequest struct {
 	VaultId       string                 `protobuf:"bytes,1,opt,name=vault_id,json=vaultId,proto3" json:"vault_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Data          map[string]*SecretData `protobuf:"bytes,4,rep,name=data,proto3" json:"data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	KeyValues     *KeyValues             `protobuf:"bytes,4,opt,name=key_values,json=keyValues,proto3" json:"key_values,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -230,19 +239,20 @@ func (x *CreateSecretRequest) GetDescription() string {
 	return ""
 }
 
-func (x *CreateSecretRequest) GetData() map[string]*SecretData {
+func (x *CreateSecretRequest) GetKeyValues() *KeyValues {
 	if x != nil {
-		return x.Data
+		return x.KeyValues
 	}
 	return nil
 }
 
 type UpdateSecretRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SecretId      string                 `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Data          map[string]*SecretData `protobuf:"bytes,4,rep,name=data,proto3" json:"data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	VaultId       string                 `protobuf:"bytes,1,opt,name=vault_id,json=vaultId,proto3" json:"vault_id,omitempty"`
+	SecretId      string                 `protobuf:"bytes,2,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
+	Name          *string                `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	KeyValues     *KeyValues             `protobuf:"bytes,5,opt,name=key_values,json=keyValues,proto3,oneof" json:"key_values,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -277,6 +287,13 @@ func (*UpdateSecretRequest) Descriptor() ([]byte, []int) {
 	return file_v1_secret_service_proto_rawDescGZIP(), []int{4}
 }
 
+func (x *UpdateSecretRequest) GetVaultId() string {
+	if x != nil {
+		return x.VaultId
+	}
+	return ""
+}
+
 func (x *UpdateSecretRequest) GetSecretId() string {
 	if x != nil {
 		return x.SecretId
@@ -285,29 +302,30 @@ func (x *UpdateSecretRequest) GetSecretId() string {
 }
 
 func (x *UpdateSecretRequest) GetName() string {
-	if x != nil {
-		return x.Name
+	if x != nil && x.Name != nil {
+		return *x.Name
 	}
 	return ""
 }
 
 func (x *UpdateSecretRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
+	if x != nil && x.Description != nil {
+		return *x.Description
 	}
 	return ""
 }
 
-func (x *UpdateSecretRequest) GetData() map[string]*SecretData {
+func (x *UpdateSecretRequest) GetKeyValues() *KeyValues {
 	if x != nil {
-		return x.Data
+		return x.KeyValues
 	}
 	return nil
 }
 
 type DeleteSecretRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SecretId      string                 `protobuf:"bytes,1,opt,name=Secret_id,json=SecretId,proto3" json:"Secret_id,omitempty"`
+	VaultId       string                 `protobuf:"bytes,1,opt,name=vault_id,json=vaultId,proto3" json:"vault_id,omitempty"`
+	SecretId      string                 `protobuf:"bytes,2,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -340,6 +358,13 @@ func (x *DeleteSecretRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use DeleteSecretRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSecretRequest) Descriptor() ([]byte, []int) {
 	return file_v1_secret_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteSecretRequest) GetVaultId() string {
+	if x != nil {
+		return x.VaultId
+	}
+	return ""
 }
 
 func (x *DeleteSecretRequest) GetSecretId() string {
@@ -385,20 +410,66 @@ func (*DeleteSecretResponce) Descriptor() ([]byte, []int) {
 	return file_v1_secret_service_proto_rawDescGZIP(), []int{6}
 }
 
+type KeyValues struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	KeyValues     map[string][]byte      `protobuf:"bytes,1,rep,name=key_values,json=keyValues,proto3" json:"key_values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KeyValues) Reset() {
+	*x = KeyValues{}
+	mi := &file_v1_secret_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KeyValues) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KeyValues) ProtoMessage() {}
+
+func (x *KeyValues) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_secret_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KeyValues.ProtoReflect.Descriptor instead.
+func (*KeyValues) Descriptor() ([]byte, []int) {
+	return file_v1_secret_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *KeyValues) GetKeyValues() map[string][]byte {
+	if x != nil {
+		return x.KeyValues
+	}
+	return nil
+}
+
 type Secret struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	VaultId       string                 `protobuf:"bytes,1,opt,name=vault_id,json=vaultId,proto3" json:"vault_id,omitempty"`
-	SecretId      string                 `protobuf:"bytes,2,opt,name=Secret_id,json=SecretId,proto3" json:"Secret_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	Data          map[string]*SecretData `protobuf:"bytes,5,rep,name=data,proto3" json:"data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	SecretId      string                 `protobuf:"bytes,2,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	KeyValues     *KeyValues             `protobuf:"bytes,6,opt,name=key_values,json=keyValues,proto3" json:"key_values,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Secret) Reset() {
 	*x = Secret{}
-	mi := &file_v1_secret_service_proto_msgTypes[7]
+	mi := &file_v1_secret_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -410,7 +481,7 @@ func (x *Secret) String() string {
 func (*Secret) ProtoMessage() {}
 
 func (x *Secret) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_secret_service_proto_msgTypes[7]
+	mi := &file_v1_secret_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -423,7 +494,7 @@ func (x *Secret) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Secret.ProtoReflect.Descriptor instead.
 func (*Secret) Descriptor() ([]byte, []int) {
-	return file_v1_secret_service_proto_rawDescGZIP(), []int{7}
+	return file_v1_secret_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Secret) GetVaultId() string {
@@ -454,61 +525,23 @@ func (x *Secret) GetDescription() string {
 	return ""
 }
 
-func (x *Secret) GetData() map[string]*SecretData {
+func (x *Secret) GetKeyValues() *KeyValues {
 	if x != nil {
-		return x.Data
+		return x.KeyValues
 	}
 	return nil
 }
 
-type SecretData struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	ProtectedValue []byte                 `protobuf:"bytes,2,opt,name=protected_value,json=protectedValue,proto3" json:"protected_value,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *SecretData) Reset() {
-	*x = SecretData{}
-	mi := &file_v1_secret_service_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SecretData) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SecretData) ProtoMessage() {}
-
-func (x *SecretData) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_secret_service_proto_msgTypes[8]
+func (x *Secret) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.CreatedAt
 	}
-	return mi.MessageOf(x)
+	return nil
 }
 
-// Deprecated: Use SecretData.ProtoReflect.Descriptor instead.
-func (*SecretData) Descriptor() ([]byte, []int) {
-	return file_v1_secret_service_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *SecretData) GetName() string {
+func (x *Secret) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *SecretData) GetProtectedValue() []byte {
-	if x != nil {
-		return x.ProtectedValue
+		return x.UpdatedAt
 	}
 	return nil
 }
@@ -517,52 +550,58 @@ var File_v1_secret_service_proto protoreflect.FileDescriptor
 
 const file_v1_secret_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17v1/secret_service.proto\x12\x05larec\"]\n" +
+	"\x17v1/secret_service.proto\x12\x05larec\x1a\x1fgoogle/protobuf/timestamp.proto\"]\n" +
 	"\x12ListSecretsRequest\x12\x19\n" +
 	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x16\n" +
 	"\x06offset\x18\x02 \x01(\x05R\x06offset\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x05R\x05limit\">\n" +
 	"\x13ListSecretsResponse\x12'\n" +
-	"\aSecrets\x18\x01 \x03(\v2\r.larec.SecretR\aSecrets\"/\n" +
-	"\x10GetSecretRequest\x12\x1b\n" +
-	"\tsecret_id\x18\x01 \x01(\tR\bsecretId\"\xec\x01\n" +
+	"\aSecrets\x18\x01 \x03(\v2\r.larec.SecretR\aSecrets\"J\n" +
+	"\x10GetSecretRequest\x12\x19\n" +
+	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x1b\n" +
+	"\tsecret_id\x18\x02 \x01(\tR\bsecretId\"\x97\x01\n" +
 	"\x13CreateSecretRequest\x12\x19\n" +
 	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x128\n" +
-	"\x04data\x18\x04 \x03(\v2$.larec.CreateSecretRequest.DataEntryR\x04data\x1aJ\n" +
-	"\tDataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12'\n" +
-	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"\xee\x01\n" +
-	"\x13UpdateSecretRequest\x12\x1b\n" +
-	"\tsecret_id\x18\x01 \x01(\tR\bsecretId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x128\n" +
-	"\x04data\x18\x04 \x03(\v2$.larec.UpdateSecretRequest.DataEntryR\x04data\x1aJ\n" +
-	"\tDataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12'\n" +
-	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"2\n" +
-	"\x13DeleteSecretRequest\x12\x1b\n" +
-	"\tSecret_id\x18\x01 \x01(\tR\bSecretId\"\x16\n" +
-	"\x14DeleteSecretResponce\"\xef\x01\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12/\n" +
+	"\n" +
+	"key_values\x18\x04 \x01(\v2\x10.larec.KeyValuesR\tkeyValues\"\xeb\x01\n" +
+	"\x13UpdateSecretRequest\x12\x19\n" +
+	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x1b\n" +
+	"\tsecret_id\x18\x02 \x01(\tR\bsecretId\x12\x17\n" +
+	"\x04name\x18\x03 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01\x124\n" +
+	"\n" +
+	"key_values\x18\x05 \x01(\v2\x10.larec.KeyValuesH\x02R\tkeyValues\x88\x01\x01B\a\n" +
+	"\x05_nameB\x0e\n" +
+	"\f_descriptionB\r\n" +
+	"\v_key_values\"M\n" +
+	"\x13DeleteSecretRequest\x12\x19\n" +
+	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x1b\n" +
+	"\tsecret_id\x18\x02 \x01(\tR\bsecretId\"\x16\n" +
+	"\x14DeleteSecretResponce\"\x89\x01\n" +
+	"\tKeyValues\x12>\n" +
+	"\n" +
+	"key_values\x18\x01 \x03(\v2\x1f.larec.KeyValues.KeyValuesEntryR\tkeyValues\x1a<\n" +
+	"\x0eKeyValuesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\fR\x05value:\x028\x01\"\x9d\x02\n" +
 	"\x06Secret\x12\x19\n" +
 	"\bvault_id\x18\x01 \x01(\tR\avaultId\x12\x1b\n" +
-	"\tSecret_id\x18\x02 \x01(\tR\bSecretId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12+\n" +
-	"\x04data\x18\x05 \x03(\v2\x17.larec.Secret.DataEntryR\x04data\x1aJ\n" +
-	"\tDataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12'\n" +
-	"\x05value\x18\x02 \x01(\v2\x11.larec.SecretDataR\x05value:\x028\x01\"I\n" +
+	"\tsecret_id\x18\x02 \x01(\tR\bsecretId\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x05 \x01(\tR\vdescription\x12/\n" +
 	"\n" +
-	"SecretData\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12'\n" +
-	"\x0fprotected_value\x18\x02 \x01(\fR\x0eprotectedValue2\xc9\x02\n" +
+	"key_values\x18\x06 \x01(\v2\x10.larec.KeyValuesR\tkeyValues\x129\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt2\xc9\x02\n" +
 	"\rSecretService\x12D\n" +
 	"\vListSecrets\x12\x19.larec.ListSecretsRequest\x1a\x1a.larec.ListSecretsResponse\x123\n" +
 	"\tGetSecret\x12\x17.larec.GetSecretRequest\x1a\r.larec.Secret\x129\n" +
 	"\fCreateSecret\x12\x1a.larec.CreateSecretRequest\x1a\r.larec.Secret\x129\n" +
-	"\fUpdatesecret\x12\x1a.larec.UpdateSecretRequest\x1a\r.larec.Secret\x12G\n" +
+	"\fUpdateSecret\x12\x1a.larec.UpdateSecretRequest\x1a\r.larec.Secret\x12G\n" +
 	"\fDeleteSecret\x12\x1a.larec.DeleteSecretRequest\x1a\x1b.larec.DeleteSecretResponceB\bZ\x06/apiv1b\x06proto3"
 
 var (
@@ -577,38 +616,37 @@ func file_v1_secret_service_proto_rawDescGZIP() []byte {
 	return file_v1_secret_service_proto_rawDescData
 }
 
-var file_v1_secret_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_v1_secret_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_v1_secret_service_proto_goTypes = []any{
-	(*ListSecretsRequest)(nil),   // 0: larec.ListSecretsRequest
-	(*ListSecretsResponse)(nil),  // 1: larec.ListSecretsResponse
-	(*GetSecretRequest)(nil),     // 2: larec.GetSecretRequest
-	(*CreateSecretRequest)(nil),  // 3: larec.CreateSecretRequest
-	(*UpdateSecretRequest)(nil),  // 4: larec.UpdateSecretRequest
-	(*DeleteSecretRequest)(nil),  // 5: larec.DeleteSecretRequest
-	(*DeleteSecretResponce)(nil), // 6: larec.DeleteSecretResponce
-	(*Secret)(nil),               // 7: larec.Secret
-	(*SecretData)(nil),           // 8: larec.SecretData
-	nil,                          // 9: larec.CreateSecretRequest.DataEntry
-	nil,                          // 10: larec.UpdateSecretRequest.DataEntry
-	nil,                          // 11: larec.Secret.DataEntry
+	(*ListSecretsRequest)(nil),    // 0: larec.ListSecretsRequest
+	(*ListSecretsResponse)(nil),   // 1: larec.ListSecretsResponse
+	(*GetSecretRequest)(nil),      // 2: larec.GetSecretRequest
+	(*CreateSecretRequest)(nil),   // 3: larec.CreateSecretRequest
+	(*UpdateSecretRequest)(nil),   // 4: larec.UpdateSecretRequest
+	(*DeleteSecretRequest)(nil),   // 5: larec.DeleteSecretRequest
+	(*DeleteSecretResponce)(nil),  // 6: larec.DeleteSecretResponce
+	(*KeyValues)(nil),             // 7: larec.KeyValues
+	(*Secret)(nil),                // 8: larec.Secret
+	nil,                           // 9: larec.KeyValues.KeyValuesEntry
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_v1_secret_service_proto_depIdxs = []int32{
-	7,  // 0: larec.ListSecretsResponse.Secrets:type_name -> larec.Secret
-	9,  // 1: larec.CreateSecretRequest.data:type_name -> larec.CreateSecretRequest.DataEntry
-	10, // 2: larec.UpdateSecretRequest.data:type_name -> larec.UpdateSecretRequest.DataEntry
-	11, // 3: larec.Secret.data:type_name -> larec.Secret.DataEntry
-	8,  // 4: larec.CreateSecretRequest.DataEntry.value:type_name -> larec.SecretData
-	8,  // 5: larec.UpdateSecretRequest.DataEntry.value:type_name -> larec.SecretData
-	8,  // 6: larec.Secret.DataEntry.value:type_name -> larec.SecretData
+	8,  // 0: larec.ListSecretsResponse.Secrets:type_name -> larec.Secret
+	7,  // 1: larec.CreateSecretRequest.key_values:type_name -> larec.KeyValues
+	7,  // 2: larec.UpdateSecretRequest.key_values:type_name -> larec.KeyValues
+	9,  // 3: larec.KeyValues.key_values:type_name -> larec.KeyValues.KeyValuesEntry
+	7,  // 4: larec.Secret.key_values:type_name -> larec.KeyValues
+	10, // 5: larec.Secret.created_at:type_name -> google.protobuf.Timestamp
+	10, // 6: larec.Secret.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 7: larec.SecretService.ListSecrets:input_type -> larec.ListSecretsRequest
 	2,  // 8: larec.SecretService.GetSecret:input_type -> larec.GetSecretRequest
 	3,  // 9: larec.SecretService.CreateSecret:input_type -> larec.CreateSecretRequest
-	4,  // 10: larec.SecretService.Updatesecret:input_type -> larec.UpdateSecretRequest
+	4,  // 10: larec.SecretService.UpdateSecret:input_type -> larec.UpdateSecretRequest
 	5,  // 11: larec.SecretService.DeleteSecret:input_type -> larec.DeleteSecretRequest
 	1,  // 12: larec.SecretService.ListSecrets:output_type -> larec.ListSecretsResponse
-	7,  // 13: larec.SecretService.GetSecret:output_type -> larec.Secret
-	7,  // 14: larec.SecretService.CreateSecret:output_type -> larec.Secret
-	7,  // 15: larec.SecretService.Updatesecret:output_type -> larec.Secret
+	8,  // 13: larec.SecretService.GetSecret:output_type -> larec.Secret
+	8,  // 14: larec.SecretService.CreateSecret:output_type -> larec.Secret
+	8,  // 15: larec.SecretService.UpdateSecret:output_type -> larec.Secret
 	6,  // 16: larec.SecretService.DeleteSecret:output_type -> larec.DeleteSecretResponce
 	12, // [12:17] is the sub-list for method output_type
 	7,  // [7:12] is the sub-list for method input_type
@@ -622,13 +660,14 @@ func file_v1_secret_service_proto_init() {
 	if File_v1_secret_service_proto != nil {
 		return
 	}
+	file_v1_secret_service_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_secret_service_proto_rawDesc), len(file_v1_secret_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

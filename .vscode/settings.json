@@ -1,0 +1,19 @@
+{
+    "protoc": {
+        "options": [
+      "--proto_path=./api/proto"
+    ]
+    },
+    "sqltools.connections": [
+      {
+        "previewLimit": 50,
+        "server": "localhost",
+        "port": 5432,
+        "driver": "PostgreSQL",
+        "name": "some-postgress-conn",
+        "database": "postgres",
+        "username": "postgres",
+        "password": "mysecretpassword"
+      }
+    ]
+}

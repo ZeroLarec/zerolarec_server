@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS "access_rules";
+DROP TABLE IF EXISTS "vault_members";
+DROP TABLE IF EXISTS "users";
+DROP TABLE IF EXISTS "secrets";
+DROP TABLE IF EXISTS "vaults";

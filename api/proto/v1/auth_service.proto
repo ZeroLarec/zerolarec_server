@@ -14,11 +14,14 @@ service AuthenticateService {
 message RegisterRequest {
     string login = 1;
     string password = 2;
+    
+    bytes public_key = 3;
+    bytes private_key_protected = 4;
 }
 
 message RegisterResponse {
     string access_token = 1;
-    User user = 2;
+    User user = 3;
 }
 
 message LoginRequest {

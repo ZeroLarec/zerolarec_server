@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+
+service HealthService {
+    rpc Check(CheckRequest) returns (CheckResponse);
+}
+
+message CheckRequest {
+}
+
+message CheckResponse {
+}
+

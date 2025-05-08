@@ -20,12 +20,14 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	VaultService_ListVaults_FullMethodName           = "/larec.VaultService/ListVaults"
+	VaultService_GetVault_FullMethodName             = "/larec.VaultService/GetVault"
 	VaultService_CreateVault_FullMethodName          = "/larec.VaultService/CreateVault"
+	VaultService_UpdateVault_FullMethodName          = "/larec.VaultService/UpdateVault"
 	VaultService_DeleteVault_FullMethodName          = "/larec.VaultService/DeleteVault"
 	VaultService_ListVaultMembers_FullMethodName     = "/larec.VaultService/ListVaultMembers"
-	VaultService_GetVaultSymmetricKey_FullMethodName = "/larec.VaultService/GetVaultSymmetricKey"
-	VaultService_AddUserToVault_FullMethodName       = "/larec.VaultService/AddUserToVault"
-	VaultService_RemoveUserFromVault_FullMethodName  = "/larec.VaultService/RemoveUserFromVault"
+	VaultService_AddMember_FullMethodName            = "/larec.VaultService/AddMember"
+	VaultService_RemoveMember_FullMethodName         = "/larec.VaultService/RemoveMember"
+	VaultService_GetVaultKeyProtected_FullMethodName = "/larec.VaultService/GetVaultKeyProtected"
 )
 
 // VaultServiceClient is the client API for VaultService service.
@@ -33,12 +35,14 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VaultServiceClient interface {
 	ListVaults(ctx context.Context, in *ListVaultsRequest, opts ...grpc.CallOption) (*ListVaultsResponse, error)
+	GetVault(ctx context.Context, in *GetVaultRequest, opts ...grpc.CallOption) (*Vault, error)
 	CreateVault(ctx context.Context, in *CreateVaultRequest, opts ...grpc.CallOption) (*Vault, error)
+	UpdateVault(ctx context.Context, in *UpdateVaultRequest, opts ...grpc.CallOption) (*Vault, error)
 	DeleteVault(ctx context.Context, in *DeleteVaultRequest, opts ...grpc.CallOption) (*DeleteVaultResponse, error)
 	ListVaultMembers(ctx context.Context, in *ListVaultMembersRequest, opts ...grpc.CallOption) (*ListVaultMembersResponse, error)
-	GetVaultSymmetricKey(ctx context.Context, in *GetVaultSymmetricKeyRequest, opts ...grpc.CallOption) (*GetVaultSymmetricKeyResponse, error)
-	AddUserToVault(ctx context.Context, in *AddUserToVaultRequest, opts ...grpc.CallOption) (*AddUserToVaultResponse, error)
-	RemoveUserFromVault(ctx context.Context, in *RemoveUserFromVaultRequest, opts ...grpc.CallOption) (*RemoveUserFromVaultResponse, error)
+	AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*AddMemberResponse, error)
+	RemoveMember(ctx context.Context, in *RemoveMemberRequest, opts ...grpc.CallOption) (*RemoveMemberResponse, error)
+	GetVaultKeyProtected(ctx context.Context, in *GetVaultKeyProtectedRequest, opts ...grpc.CallOption) (*GetVaultKeyProtectedResponse, error)
 }
 
 type vaultServiceClient struct {
@@ -59,10 +63,30 @@ func (c *vaultServiceClient) ListVaults(ctx context.Context, in *ListVaultsReque
 	return out, nil
 }
 
+func (c *vaultServiceClient) GetVault(ctx context.Context, in *GetVaultRequest, opts ...grpc.CallOption) (*Vault, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Vault)
+	err := c.cc.Invoke(ctx, VaultService_GetVault_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *vaultServiceClient) CreateVault(ctx context.Context, in *CreateVaultRequest, opts ...grpc.CallOption) (*Vault, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Vault)
 	err := c.cc.Invoke(ctx, VaultService_CreateVault_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vaultServiceClient) UpdateVault(ctx context.Context, in *UpdateVaultRequest, opts ...grpc.CallOption) (*Vault, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Vault)
+	err := c.cc.Invoke(ctx, VaultService_UpdateVault_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -89,30 +113,30 @@ func (c *vaultServiceClient) ListVaultMembers(ctx context.Context, in *ListVault
 	return out, nil
 }
 
-func (c *vaultServiceClient) GetVaultSymmetricKey(ctx context.Context, in *GetVaultSymmetricKeyRequest, opts ...grpc.CallOption) (*GetVaultSymmetricKeyResponse, error) {
+func (c *vaultServiceClient) AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*AddMemberResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetVaultSymmetricKeyResponse)
-	err := c.cc.Invoke(ctx, VaultService_GetVaultSymmetricKey_FullMethodName, in, out, cOpts...)
+	out := new(AddMemberResponse)
+	err := c.cc.Invoke(ctx, VaultService_AddMember_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *vaultServiceClient) AddUserToVault(ctx context.Context, in *AddUserToVaultRequest, opts ...grpc.CallOption) (*AddUserToVaultResponse, error) {
+func (c *vaultServiceClient) RemoveMember(ctx context.Context, in *RemoveMemberRequest, opts ...grpc.CallOption) (*RemoveMemberResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddUserToVaultResponse)
-	err := c.cc.Invoke(ctx, VaultService_AddUserToVault_FullMethodName, in, out, cOpts...)
+	out := new(RemoveMemberResponse)
+	err := c.cc.Invoke(ctx, VaultService_RemoveMember_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *vaultServiceClient) RemoveUserFromVault(ctx context.Context, in *RemoveUserFromVaultRequest, opts ...grpc.CallOption) (*RemoveUserFromVaultResponse, error) {
+func (c *vaultServiceClient) GetVaultKeyProtected(ctx context.Context, in *GetVaultKeyProtectedRequest, opts ...grpc.CallOption) (*GetVaultKeyProtectedResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RemoveUserFromVaultResponse)
-	err := c.cc.Invoke(ctx, VaultService_RemoveUserFromVault_FullMethodName, in, out, cOpts...)
+	out := new(GetVaultKeyProtectedResponse)
+	err := c.cc.Invoke(ctx, VaultService_GetVaultKeyProtected_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -124,12 +148,14 @@ func (c *vaultServiceClient) RemoveUserFromVault(ctx context.Context, in *Remove
 // for forward compatibility.
 type VaultServiceServer interface {
 	ListVaults(context.Context, *ListVaultsRequest) (*ListVaultsResponse, error)
+	GetVault(context.Context, *GetVaultRequest) (*Vault, error)
 	CreateVault(context.Context, *CreateVaultRequest) (*Vault, error)
+	UpdateVault(context.Context, *UpdateVaultRequest) (*Vault, error)
 	DeleteVault(context.Context, *DeleteVaultRequest) (*DeleteVaultResponse, error)
 	ListVaultMembers(context.Context, *ListVaultMembersRequest) (*ListVaultMembersResponse, error)
-	GetVaultSymmetricKey(context.Context, *GetVaultSymmetricKeyRequest) (*GetVaultSymmetricKeyResponse, error)
-	AddUserToVault(context.Context, *AddUserToVaultRequest) (*AddUserToVaultResponse, error)
-	RemoveUserFromVault(context.Context, *RemoveUserFromVaultRequest) (*RemoveUserFromVaultResponse, error)
+	AddMember(context.Context, *AddMemberRequest) (*AddMemberResponse, error)
+	RemoveMember(context.Context, *RemoveMemberRequest) (*RemoveMemberResponse, error)
+	GetVaultKeyProtected(context.Context, *GetVaultKeyProtectedRequest) (*GetVaultKeyProtectedResponse, error)
 	mustEmbedUnimplementedVaultServiceServer()
 }
 
@@ -143,8 +169,14 @@ type UnimplementedVaultServiceServer struct{}
 func (UnimplementedVaultServiceServer) ListVaults(context.Context, *ListVaultsRequest) (*ListVaultsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListVaults not implemented")
 }
+func (UnimplementedVaultServiceServer) GetVault(context.Context, *GetVaultRequest) (*Vault, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVault not implemented")
+}
 func (UnimplementedVaultServiceServer) CreateVault(context.Context, *CreateVaultRequest) (*Vault, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVault not implemented")
+}
+func (UnimplementedVaultServiceServer) UpdateVault(context.Context, *UpdateVaultRequest) (*Vault, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateVault not implemented")
 }
 func (UnimplementedVaultServiceServer) DeleteVault(context.Context, *DeleteVaultRequest) (*DeleteVaultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteVault not implemented")
@@ -152,14 +184,14 @@ func (UnimplementedVaultServiceServer) DeleteVault(context.Context, *DeleteVault
 func (UnimplementedVaultServiceServer) ListVaultMembers(context.Context, *ListVaultMembersRequest) (*ListVaultMembersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListVaultMembers not implemented")
 }
-func (UnimplementedVaultServiceServer) GetVaultSymmetricKey(context.Context, *GetVaultSymmetricKeyRequest) (*GetVaultSymmetricKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVaultSymmetricKey not implemented")
+func (UnimplementedVaultServiceServer) AddMember(context.Context, *AddMemberRequest) (*AddMemberResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMember not implemented")
 }
-func (UnimplementedVaultServiceServer) AddUserToVault(context.Context, *AddUserToVaultRequest) (*AddUserToVaultResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddUserToVault not implemented")
+func (UnimplementedVaultServiceServer) RemoveMember(context.Context, *RemoveMemberRequest) (*RemoveMemberResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveMember not implemented")
 }
-func (UnimplementedVaultServiceServer) RemoveUserFromVault(context.Context, *RemoveUserFromVaultRequest) (*RemoveUserFromVaultResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveUserFromVault not implemented")
+func (UnimplementedVaultServiceServer) GetVaultKeyProtected(context.Context, *GetVaultKeyProtectedRequest) (*GetVaultKeyProtectedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVaultKeyProtected not implemented")
 }
 func (UnimplementedVaultServiceServer) mustEmbedUnimplementedVaultServiceServer() {}
 func (UnimplementedVaultServiceServer) testEmbeddedByValue()                      {}
@@ -200,6 +232,24 @@ func _VaultService_ListVaults_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VaultService_GetVault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVaultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).GetVault(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_GetVault_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).GetVault(ctx, req.(*GetVaultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _VaultService_CreateVault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateVaultRequest)
 	if err := dec(in); err != nil {
@@ -214,6 +264,24 @@ func _VaultService_CreateVault_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VaultServiceServer).CreateVault(ctx, req.(*CreateVaultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VaultService_UpdateVault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateVaultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).UpdateVault(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_UpdateVault_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).UpdateVault(ctx, req.(*UpdateVaultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -254,56 +322,56 @@ func _VaultService_ListVaultMembers_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VaultService_GetVaultSymmetricKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetVaultSymmetricKeyRequest)
+func _VaultService_AddMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMemberRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VaultServiceServer).GetVaultSymmetricKey(ctx, in)
+		return srv.(VaultServiceServer).AddMember(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VaultService_GetVaultSymmetricKey_FullMethodName,
+		FullMethod: VaultService_AddMember_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VaultServiceServer).GetVaultSymmetricKey(ctx, req.(*GetVaultSymmetricKeyRequest))
+		return srv.(VaultServiceServer).AddMember(ctx, req.(*AddMemberRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VaultService_AddUserToVault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddUserToVaultRequest)
+func _VaultService_RemoveMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveMemberRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VaultServiceServer).AddUserToVault(ctx, in)
+		return srv.(VaultServiceServer).RemoveMember(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VaultService_AddUserToVault_FullMethodName,
+		FullMethod: VaultService_RemoveMember_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VaultServiceServer).AddUserToVault(ctx, req.(*AddUserToVaultRequest))
+		return srv.(VaultServiceServer).RemoveMember(ctx, req.(*RemoveMemberRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VaultService_RemoveUserFromVault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveUserFromVaultRequest)
+func _VaultService_GetVaultKeyProtected_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVaultKeyProtectedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VaultServiceServer).RemoveUserFromVault(ctx, in)
+		return srv.(VaultServiceServer).GetVaultKeyProtected(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VaultService_RemoveUserFromVault_FullMethodName,
+		FullMethod: VaultService_GetVaultKeyProtected_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VaultServiceServer).RemoveUserFromVault(ctx, req.(*RemoveUserFromVaultRequest))
+		return srv.(VaultServiceServer).GetVaultKeyProtected(ctx, req.(*GetVaultKeyProtectedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -320,8 +388,16 @@ var VaultService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _VaultService_ListVaults_Handler,
 		},
 		{
+			MethodName: "GetVault",
+			Handler:    _VaultService_GetVault_Handler,
+		},
+		{
 			MethodName: "CreateVault",
 			Handler:    _VaultService_CreateVault_Handler,
+		},
+		{
+			MethodName: "UpdateVault",
+			Handler:    _VaultService_UpdateVault_Handler,
 		},
 		{
 			MethodName: "DeleteVault",
@@ -332,16 +408,16 @@ var VaultService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _VaultService_ListVaultMembers_Handler,
 		},
 		{
-			MethodName: "GetVaultSymmetricKey",
-			Handler:    _VaultService_GetVaultSymmetricKey_Handler,
+			MethodName: "AddMember",
+			Handler:    _VaultService_AddMember_Handler,
 		},
 		{
-			MethodName: "AddUserToVault",
-			Handler:    _VaultService_AddUserToVault_Handler,
+			MethodName: "RemoveMember",
+			Handler:    _VaultService_RemoveMember_Handler,
 		},
 		{
-			MethodName: "RemoveUserFromVault",
-			Handler:    _VaultService_RemoveUserFromVault_Handler,
+			MethodName: "GetVaultKeyProtected",
+			Handler:    _VaultService_GetVaultKeyProtected_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

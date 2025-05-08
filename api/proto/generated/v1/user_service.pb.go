@@ -9,6 +9,7 @@ package apiv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -23,7 +24,7 @@ const (
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        *string                `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3,oneof" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,23 +60,238 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *GetUserRequest) GetUserId() string {
-	if x != nil && x.UserId != nil {
-		return *x.UserId
+	if x != nil {
+		return x.UserId
 	}
 	return ""
+}
+
+type GetUserPrivateKeyProtectedRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserPrivateKeyProtectedRequest) Reset() {
+	*x = GetUserPrivateKeyProtectedRequest{}
+	mi := &file_v1_user_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserPrivateKeyProtectedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserPrivateKeyProtectedRequest) ProtoMessage() {}
+
+func (x *GetUserPrivateKeyProtectedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_user_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserPrivateKeyProtectedRequest.ProtoReflect.Descriptor instead.
+func (*GetUserPrivateKeyProtectedRequest) Descriptor() ([]byte, []int) {
+	return file_v1_user_service_proto_rawDescGZIP(), []int{1}
+}
+
+type GetUserPrivateKeyProtectedResponse struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	PrivateKeyProtected []byte                 `protobuf:"bytes,1,opt,name=private_key_protected,json=privateKeyProtected,proto3" json:"private_key_protected,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *GetUserPrivateKeyProtectedResponse) Reset() {
+	*x = GetUserPrivateKeyProtectedResponse{}
+	mi := &file_v1_user_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserPrivateKeyProtectedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserPrivateKeyProtectedResponse) ProtoMessage() {}
+
+func (x *GetUserPrivateKeyProtectedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_user_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserPrivateKeyProtectedResponse.ProtoReflect.Descriptor instead.
+func (*GetUserPrivateKeyProtectedResponse) Descriptor() ([]byte, []int) {
+	return file_v1_user_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetUserPrivateKeyProtectedResponse) GetPrivateKeyProtected() []byte {
+	if x != nil {
+		return x.PrivateKeyProtected
+	}
+	return nil
+}
+
+type UpdateUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Login         *string                `protobuf:"bytes,2,opt,name=login,proto3,oneof" json:"login,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateUserRequest) Reset() {
+	*x = UpdateUserRequest{}
+	mi := &file_v1_user_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserRequest) ProtoMessage() {}
+
+func (x *UpdateUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_user_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserRequest.ProtoReflect.Descriptor instead.
+func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
+	return file_v1_user_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UpdateUserRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UpdateUserRequest) GetLogin() string {
+	if x != nil && x.Login != nil {
+		return *x.Login
+	}
+	return ""
+}
+
+type DeleteUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserRequest) Reset() {
+	*x = DeleteUserRequest{}
+	mi := &file_v1_user_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserRequest) ProtoMessage() {}
+
+func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_user_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserRequest.ProtoReflect.Descriptor instead.
+func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
+	return file_v1_user_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DeleteUserRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type DeleteUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserResponse) Reset() {
+	*x = DeleteUserResponse{}
+	mi := &file_v1_user_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserResponse) ProtoMessage() {}
+
+func (x *DeleteUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_user_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserResponse.ProtoReflect.Descriptor instead.
+func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
+	return file_v1_user_service_proto_rawDescGZIP(), []int{5}
 }
 
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
+	PublicKey     []byte                 `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_v1_user_service_proto_msgTypes[1]
+	mi := &file_v1_user_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -87,7 +303,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_user_service_proto_msgTypes[1]
+	mi := &file_v1_user_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -100,7 +316,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_v1_user_service_proto_rawDescGZIP(), []int{1}
+	return file_v1_user_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *User) GetUserId() string {
@@ -117,20 +333,60 @@ func (x *User) GetLogin() string {
 	return ""
 }
 
+func (x *User) GetPublicKey() []byte {
+	if x != nil {
+		return x.PublicKey
+	}
+	return nil
+}
+
+func (x *User) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
 var File_v1_user_service_proto protoreflect.FileDescriptor
 
 const file_v1_user_service_proto_rawDesc = "" +
 	"\n" +
-	"\x15v1/user_service.proto\x12\x05larec\":\n" +
-	"\x0eGetUserRequest\x12\x1c\n" +
-	"\auser_id\x18\x01 \x01(\tH\x00R\x06userId\x88\x01\x01B\n" +
-	"\n" +
-	"\b_user_id\"5\n" +
+	"\x15v1/user_service.proto\x12\x05larec\x1a\x1fgoogle/protobuf/timestamp.proto\")\n" +
+	"\x0eGetUserRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"#\n" +
+	"!GetUserPrivateKeyProtectedRequest\"X\n" +
+	"\"GetUserPrivateKeyProtectedResponse\x122\n" +
+	"\x15private_key_protected\x18\x01 \x01(\fR\x13privateKeyProtected\"Q\n" +
+	"\x11UpdateUserRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x19\n" +
+	"\x05login\x18\x02 \x01(\tH\x00R\x05login\x88\x01\x01B\b\n" +
+	"\x06_login\",\n" +
+	"\x11DeleteUserRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x14\n" +
+	"\x12DeleteUserResponse\"\xca\x01\n" +
 	"\x04User\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
-	"\x05login\x18\x02 \x01(\tR\x05login2<\n" +
+	"\x05login\x18\x02 \x01(\tR\x05login\x12\x1d\n" +
+	"\n" +
+	"public_key\x18\x03 \x01(\fR\tpublicKey\x129\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt2\xa7\x02\n" +
 	"\vUserService\x12-\n" +
-	"\aGetUser\x12\x15.larec.GetUserRequest\x1a\v.larec.UserB\bZ\x06/apiv1b\x06proto3"
+	"\aGetUser\x12\x15.larec.GetUserRequest\x1a\v.larec.User\x12q\n" +
+	"\x1aGetUserPrivateKeyProtected\x12(.larec.GetUserPrivateKeyProtectedRequest\x1a).larec.GetUserPrivateKeyProtectedResponse\x123\n" +
+	"\n" +
+	"UpdateUser\x12\x18.larec.UpdateUserRequest\x1a\v.larec.User\x12A\n" +
+	"\n" +
+	"DeleteUser\x12\x18.larec.DeleteUserRequest\x1a\x19.larec.DeleteUserResponseB\bZ\x06/apiv1b\x06proto3"
 
 var (
 	file_v1_user_service_proto_rawDescOnce sync.Once
@@ -144,19 +400,33 @@ func file_v1_user_service_proto_rawDescGZIP() []byte {
 	return file_v1_user_service_proto_rawDescData
 }
 
-var file_v1_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_v1_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_v1_user_service_proto_goTypes = []any{
-	(*GetUserRequest)(nil), // 0: larec.GetUserRequest
-	(*User)(nil),           // 1: larec.User
+	(*GetUserRequest)(nil),                     // 0: larec.GetUserRequest
+	(*GetUserPrivateKeyProtectedRequest)(nil),  // 1: larec.GetUserPrivateKeyProtectedRequest
+	(*GetUserPrivateKeyProtectedResponse)(nil), // 2: larec.GetUserPrivateKeyProtectedResponse
+	(*UpdateUserRequest)(nil),                  // 3: larec.UpdateUserRequest
+	(*DeleteUserRequest)(nil),                  // 4: larec.DeleteUserRequest
+	(*DeleteUserResponse)(nil),                 // 5: larec.DeleteUserResponse
+	(*User)(nil),                               // 6: larec.User
+	(*timestamppb.Timestamp)(nil),              // 7: google.protobuf.Timestamp
 }
 var file_v1_user_service_proto_depIdxs = []int32{
-	0, // 0: larec.UserService.GetUser:input_type -> larec.GetUserRequest
-	1, // 1: larec.UserService.GetUser:output_type -> larec.User
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	7, // 0: larec.User.created_at:type_name -> google.protobuf.Timestamp
+	7, // 1: larec.User.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 2: larec.UserService.GetUser:input_type -> larec.GetUserRequest
+	1, // 3: larec.UserService.GetUserPrivateKeyProtected:input_type -> larec.GetUserPrivateKeyProtectedRequest
+	3, // 4: larec.UserService.UpdateUser:input_type -> larec.UpdateUserRequest
+	4, // 5: larec.UserService.DeleteUser:input_type -> larec.DeleteUserRequest
+	6, // 6: larec.UserService.GetUser:output_type -> larec.User
+	2, // 7: larec.UserService.GetUserPrivateKeyProtected:output_type -> larec.GetUserPrivateKeyProtectedResponse
+	6, // 8: larec.UserService.UpdateUser:output_type -> larec.User
+	5, // 9: larec.UserService.DeleteUser:output_type -> larec.DeleteUserResponse
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_v1_user_service_proto_init() }
@@ -164,14 +434,14 @@ func file_v1_user_service_proto_init() {
 	if File_v1_user_service_proto != nil {
 		return
 	}
-	file_v1_user_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_v1_user_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_user_service_proto_rawDesc), len(file_v1_user_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

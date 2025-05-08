@@ -4,17 +4,42 @@ package larec;
 
 option go_package = "/apiv1";
 
-
+import "google/protobuf/timestamp.proto";
 service UserService {
     rpc GetUser(GetUserRequest) returns (User);
-    
+    rpc GetUserPrivateKeyProtected(GetUserPrivateKeyProtectedRequest) returns (GetUserPrivateKeyProtectedResponse);
+    rpc UpdateUser(UpdateUserRequest) returns (User);
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
 }
 
 message GetUserRequest {
-    optional string user_id = 1;
+    string user_id = 1;
+}
+
+message GetUserPrivateKeyProtectedRequest {
+}
+
+message GetUserPrivateKeyProtectedResponse {
+    bytes private_key_protected = 1;
+}
+
+message UpdateUserRequest {
+    string user_id = 1;
+    optional string login = 2;
+}
+
+message DeleteUserRequest {
+    string user_id = 1;
+}
+
+message DeleteUserResponse {
 }
 
 message User {
     string user_id = 1;   
     string login = 2;
+    bytes public_key = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
 }
+

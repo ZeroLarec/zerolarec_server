@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package larec;
+
+option go_package = "/apiv1";
+
+import "google/protobuf/timestamp.proto";
+
+service AccessRuleService {
+    rpc ListAccessRules(ListAccessRulesRequest) returns (ListAccessRulesResponse);
+    rpc GetAccessRule(GetAccessRuleRequest) returns (AccessRule);
+    rpc CreateAccessRule(CreateAccessRuleRequest) returns (AccessRule);
+    rpc UpdateAccessRule(UpdateAccessRuleRequest) returns (AccessRule);
+    rpc DeleteAccessRule(DeleteAccessRuleRequest) returns (DeleteAccessRuleResponse);
+}
+
+message ListAccessRulesRequest {
+    string vault_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+}
+
+message ListAccessRulesResponse {
+    repeated AccessRule AccessRules = 1;
+}
+
+message GetAccessRuleRequest {
+    string access_rule_id = 1;
+}
+
+message CreateAccessRuleRequest {
+    string user_id = 1;
+    string vault_id = 2;
+    string secret_id = 3;
+    string description = 4;
+    repeated Permission permissions = 5;
+    google.protobuf.Timestamp expires_at = 6;
+}
+
+message UpdateAccessRuleRequest {
+    message UpdatedPermissions {
+        repeated Permission permissions = 1;
+    }
+
+    string access_rule_id = 1;
+    
+    optional string description = 2;
+    UpdatedPermissions permissions = 3;
+    optional google.protobuf.Timestamp expires_at = 4;
+}
+
+message DeleteAccessRuleRequest {
+    string access_rule_id = 1;
+}
+
+message DeleteAccessRuleResponse {
+}
+
+enum Permission {
+    PERMISSION_UNDEFINED = 0;
+    SECRET_CREATE = 1;
+    SECRET_GET = 2;
+    SECRET_UPDATE = 3;
+    SECRET_DELETE = 4;
+    SECRET_GRANT_ACCESS = 5;
+    VAULT_UPDATE = 6;
+    VAULT_DELETE = 7;
+    VAULT_MANAGE_MEMBERS = 8;
+    VAULT_GRANT_ACCESS = 9;
+}
+
+message AccessRule {
+    string access_rule_id =1;
+
+    string user_id = 2;
+    string vault_id = 3;
+    string secret_id = 4;
+    string description = 5;
+    repeated Permission permissions = 6;
+    google.protobuf.Timestamp expires_at = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}
