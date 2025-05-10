@@ -31,10 +31,9 @@ type User struct {
 }
 
 type VaultMember struct {
-	VaultMemberID string
-	VaultID       string
-	UserID        string
-	CreatedAt     time.Time
+	VaultID   string
+	UserID    string
+	CreatedAt time.Time
 }
 
 type Permission string

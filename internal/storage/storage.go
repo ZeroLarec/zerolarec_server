@@ -16,8 +16,7 @@ type UserStorage interface {
 	GetUser(ctx context.Context, userID string) (user *User, err error)
 	GetUserByLogin(ctx context.Context, login string) (user *User, err error)
 	GetUserPasswordHashByLogin(ctx context.Context, login string) (passwordHash []byte, err error)
-	GetUserPrivateKeyProtected(ctx context.Context, userID string) (privateKeyProtected []byte, err error)
-	CreateUser(ctx context.Context, login string, publicKey, passwordHash, privateKeyProtected []byte) (user *User, err error)
+	CreateUser(ctx context.Context, login string, publicKey, passwordHash []byte) (user *User, err error)
 	UpdateUser(ctx context.Context, userID string, login *string) (user *User, err error)
 	DeleteUser(ctx context.Context, userID string) (err error)
 }

@@ -21,28 +21,24 @@ func toProtoUser(user *storage.User) *apiv1.User {
 }
 
 func (s *Server) GetUser(ctx context.Context, req *apiv1.GetUserRequest) (*apiv1.User, error) {
-	user, err := s.store.GetUser(ctx, req.UserId)
-	if err != nil {
-		return nil, processStorageErr(err)
-	}
-
-	return toProtoUser(user), nil
-}
-
-func (s *Server) GetUserPrivateKeyProtected(ctx context.Context, req *apiv1.GetUserPrivateKeyProtectedRequest) (*apiv1.GetUserPrivateKeyProtectedResponse, error) {
 	callerID, ok := ctx.Value(userIDContextKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
-	privateKeyProtected, err := s.store.GetUserPrivateKeyProtected(ctx, callerID)
+	var userID string
+	if req.UserId != nil {
+		userID = *req.UserId
+	} else {
+		userID = callerID
+	}
+
+	user, err := s.store.GetUser(ctx, userID)
 	if err != nil {
 		return nil, processStorageErr(err)
 	}
 
-	return &apiv1.GetUserPrivateKeyProtectedResponse{
-		PrivateKeyProtected: privateKeyProtected,
-	}, nil
+	return toProtoUser(user), nil
 }
 
 func (s *Server) UpdateUser(ctx context.Context, req *apiv1.UpdateUserRequest) (*apiv1.User, error) {

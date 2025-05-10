@@ -122,30 +122,11 @@ func (s *PostgresStorage) GetUserPasswordHashByLogin(ctx context.Context, login 
 
 }
 
-func (s *PostgresStorage) GetUserPrivateKeyProtected(ctx context.Context, userID string) ([]byte, error) {
-	query := `
-	SELECT private_key_protected
-	FROM users
-	WHERE id = $1
-	`
-
-	var privateKeyProtected []byte
-	err := s.db.QueryRowContext(ctx, query, userID).Scan(&privateKeyProtected)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, storage.NewNotFoundError(fmt.Errorf("scan private key protected: %w", err))
-		}
-		return nil, storage.NewInternalError(fmt.Errorf("scan private key protected: %w", err))
-	}
-
-	return privateKeyProtected, nil
-}
 func (s *PostgresStorage) CreateUser(
 	ctx context.Context,
 	login string,
 	publicKey []byte,
 	passwordHash []byte,
-	privateKeyProtected []byte,
 ) (*storage.User, error) {
 	tx, err := s.db.BeginTx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelSerializable,
@@ -170,7 +151,7 @@ func (s *PostgresStorage) CreateUser(
 		UpdatedAt: time.Now(),
 	}
 
-	if err := s.createUser(ctx, tx, user, passwordHash, privateKeyProtected); err != nil {
+	if err := s.createUser(ctx, tx, user, passwordHash); err != nil {
 		return nil, fmt.Errorf("createUser: %w", err)
 	}
 
@@ -181,16 +162,15 @@ func (s *PostgresStorage) CreateUser(
 	return user, nil
 }
 
-func (s *PostgresStorage) createUser(ctx context.Context, tx *sql.Tx, user *storage.User, passwordHash, privateKeyProtected []byte) error {
+func (s *PostgresStorage) createUser(ctx context.Context, tx *sql.Tx, user *storage.User, passwordHash []byte) error {
 	_, err := tx.ExecContext(ctx, `
-		INSERT INTO users (id, login, public_key, password_hash, private_key_protected, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO users (id, login, public_key, password_hash, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6)
 	`,
 		user.UserID,
 		user.Login,
 		user.PublicKey,
 		passwordHash,
-		privateKeyProtected,
 		user.CreatedAt,
 		user.UpdatedAt,
 	)

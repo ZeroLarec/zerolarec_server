@@ -1,6 +1,8 @@
 package server
 
 import (
+	"context"
+	"log"
 	"net"
 
 	apiv1 "github.com/ZeroLarec/zerolarec_server/api/proto/generated/v1"
@@ -28,12 +30,20 @@ type Server struct {
 	store      storage.Storage
 }
 
+func NewLoggerInterceptor() grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
+		log.Printf("method: %s, req: %v", info.FullMethod, req)
+		return handler(ctx, req)
+	}
+}
+
 func NewServer(cfg Config, store storage.Storage) (*Server, error) {
 	s := &Server{
 		cfg: cfg,
 		grpcServer: grpc.NewServer(
 			grpc.ChainUnaryInterceptor(
 				NewAuthInterceptor([]byte(cfg.Secret)),
+				NewLoggerInterceptor(),
 			),
 		),
 		store: store,

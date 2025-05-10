@@ -10,9 +10,7 @@ import (
 
 func processStorageErr(err error) error {
 	st := toGRPCStatus(err)
-	if st.Code() == codes.Internal {
-		log.Printf("got internal error: %s: %s", st.Err(), err.Error())
-	}
+	log.Printf("got error: %s: %s", st.Err(), err.Error())
 
 	return st.Err()
 }

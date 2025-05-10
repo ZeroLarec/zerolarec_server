@@ -22,13 +22,12 @@ const (
 )
 
 type RegisterRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	Login               string                 `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
-	Password            string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	PublicKey           []byte                 `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
-	PrivateKeyProtected []byte                 `protobuf:"bytes,4,opt,name=private_key_protected,json=privateKeyProtected,proto3" json:"private_key_protected,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Login         string                 `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	PublicKey     []byte                 `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RegisterRequest) Reset() {
@@ -78,13 +77,6 @@ func (x *RegisterRequest) GetPassword() string {
 func (x *RegisterRequest) GetPublicKey() []byte {
 	if x != nil {
 		return x.PublicKey
-	}
-	return nil
-}
-
-func (x *RegisterRequest) GetPrivateKeyProtected() []byte {
-	if x != nil {
-		return x.PrivateKeyProtected
 	}
 	return nil
 }
@@ -196,6 +188,7 @@ func (x *LoginRequest) GetPassword() string {
 type LoginResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	User          *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -237,25 +230,32 @@ func (x *LoginResponse) GetAccessToken() string {
 	return ""
 }
 
+func (x *LoginResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 var File_v1_auth_service_proto protoreflect.FileDescriptor
 
 const file_v1_auth_service_proto_rawDesc = "" +
 	"\n" +
-	"\x15v1/auth_service.proto\x12\x05larec\x1a\x15v1/user_service.proto\"\x96\x01\n" +
+	"\x15v1/auth_service.proto\x12\x05larec\x1a\x15v1/user_service.proto\"b\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1d\n" +
 	"\n" +
-	"public_key\x18\x03 \x01(\fR\tpublicKey\x122\n" +
-	"\x15private_key_protected\x18\x04 \x01(\fR\x13privateKeyProtected\"V\n" +
+	"public_key\x18\x03 \x01(\fR\tpublicKey\"V\n" +
 	"\x10RegisterResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12\x1f\n" +
 	"\x04user\x18\x03 \x01(\v2\v.larec.UserR\x04user\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"2\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"S\n" +
 	"\rLoginResponse\x12!\n" +
-	"\faccess_token\x18\x01 \x01(\tR\vaccessToken2\x86\x01\n" +
+	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12\x1f\n" +
+	"\x04user\x18\x02 \x01(\v2\v.larec.UserR\x04user2\x86\x01\n" +
 	"\x13AuthenticateService\x12;\n" +
 	"\bRegister\x12\x16.larec.RegisterRequest\x1a\x17.larec.RegisterResponse\x122\n" +
 	"\x05Login\x12\x13.larec.LoginRequest\x1a\x14.larec.LoginResponseB\bZ\x06/apiv1b\x06proto3"
@@ -282,15 +282,16 @@ var file_v1_auth_service_proto_goTypes = []any{
 }
 var file_v1_auth_service_proto_depIdxs = []int32{
 	4, // 0: larec.RegisterResponse.user:type_name -> larec.User
-	0, // 1: larec.AuthenticateService.Register:input_type -> larec.RegisterRequest
-	2, // 2: larec.AuthenticateService.Login:input_type -> larec.LoginRequest
-	1, // 3: larec.AuthenticateService.Register:output_type -> larec.RegisterResponse
-	3, // 4: larec.AuthenticateService.Login:output_type -> larec.LoginResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 1: larec.LoginResponse.user:type_name -> larec.User
+	0, // 2: larec.AuthenticateService.Register:input_type -> larec.RegisterRequest
+	2, // 3: larec.AuthenticateService.Login:input_type -> larec.LoginRequest
+	1, // 4: larec.AuthenticateService.Register:output_type -> larec.RegisterResponse
+	3, // 5: larec.AuthenticateService.Login:output_type -> larec.LoginResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_v1_auth_service_proto_init() }

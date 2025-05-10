@@ -31,7 +31,7 @@ func (s *Server) ListSecrets(ctx context.Context, req *apiv1.ListSecretsRequest)
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
-	secrets, err := s.store.ListSecrets(ctx, callerID, req.VaultId, int(req.Offset), int(req.Limit))
+	secrets, err := s.store.ListSecrets(ctx, callerID, req.VaultId, int(req.Limit), int(req.Offset))
 	if err != nil {
 		return nil, processStorageErr(err)
 	}
@@ -72,4 +72,39 @@ func (s *Server) CreateSecret(ctx context.Context, req *apiv1.CreateSecretReques
 	}
 
 	return toProtoSecret(secret), nil
+}
+
+func (s *Server) UpdateSecret(ctx context.Context, req *apiv1.UpdateSecretRequest) (*apiv1.Secret, error) {
+	callerID, ok := ctx.Value(userIDContextKey).(string)
+	if !ok {
+		log.Println("UpdateSecret: failed to get user ID from context")
+		return nil, status.Error(codes.Internal, "internal error")
+	}
+
+	var keyValues *map[string][]byte
+	if req.KeyValues != nil {
+		keyValues = &req.KeyValues.KeyValues
+	}
+
+	secret, err := s.store.UpdateSecret(ctx, callerID, req.VaultId, req.SecretId, req.Name, req.Description, keyValues)
+	if err != nil {
+		return nil, processStorageErr(err)
+	}
+
+	return toProtoSecret(secret), nil
+}
+
+func (s *Server) DeleteSecret(ctx context.Context, req *apiv1.DeleteSecretRequest) (*apiv1.DeleteSecretResponce, error) {
+	callerID, ok := ctx.Value(userIDContextKey).(string)
+	if !ok {
+		log.Println("DeleteSecret: failed to get user ID from context")
+		return nil, status.Error(codes.Internal, "internal error")
+	}
+
+	err := s.store.DeleteSecret(ctx, callerID, req.VaultId, req.SecretId)
+	if err != nil {
+		return nil, processStorageErr(err)
+	}
+
+	return &apiv1.DeleteSecretResponce{}, nil
 }

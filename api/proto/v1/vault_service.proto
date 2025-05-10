@@ -14,11 +14,12 @@ service VaultService {
     rpc UpdateVault(UpdateVaultRequest) returns (Vault);
     rpc DeleteVault(DeleteVaultRequest) returns (DeleteVaultResponse);
     
+    rpc GetVaultKeyProtected(GetVaultKeyProtectedRequest) returns (GetVaultKeyProtectedResponse);
+    
     rpc ListVaultMembers(ListVaultMembersRequest) returns (ListVaultMembersResponse);
     rpc AddMember(AddMemberRequest) returns (AddMemberResponse);
     rpc RemoveMember(RemoveMemberRequest) returns (RemoveMemberResponse);
     
-    rpc GetVaultKeyProtected(GetVaultKeyProtectedRequest) returns (GetVaultKeyProtectedResponse);
 }
 
 

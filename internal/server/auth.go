@@ -28,7 +28,7 @@ func (s *Server) Register(ctx context.Context, req *apiv1.RegisterRequest) (*api
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
-	user, err := s.store.CreateUser(ctx, req.Login, req.PublicKey, passwordHash, req.PrivateKeyProtected)
+	user, err := s.store.CreateUser(ctx, req.Login, req.PublicKey, passwordHash)
 	if err != nil {
 		return nil, processStorageErr(err)
 	}
@@ -84,6 +84,11 @@ func (s *Server) Login(ctx context.Context, req *apiv1.LoginRequest) (*apiv1.Log
 
 	return &apiv1.LoginResponse{
 		AccessToken: accessToken,
+		User: &apiv1.User{
+			UserId:    user.UserID,
+			Login:     user.Login,
+			PublicKey: user.PublicKey,
+		},
 	}, nil
 }
 

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"login" VARCHAR(255) NOT NULL,
 	"password_hash" BYTEA NOT NULL,
 	"public_key" BYTEA NOT NULL,
-	"private_key_protected" BYTEA NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
 	"updated_at" TIMESTAMP NOT NULL
 );

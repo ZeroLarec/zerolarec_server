@@ -133,10 +133,9 @@ func (s *PostgresStorage) CreateVault(ctx context.Context, callerID string, name
 	}
 
 	member := &storage.VaultMember{
-		VaultMemberID: uuid.NewString(),
-		UserID:        callerID,
-		VaultID:       vault.VaultID,
-		CreatedAt:     time.Now(),
+		UserID:    callerID,
+		VaultID:   vault.VaultID,
+		CreatedAt: time.Now(),
 	}
 
 	if err := s.createVaultMember(ctx, tx, member, vaultKeyProtected); err != nil {
@@ -352,7 +351,7 @@ func (s *PostgresStorage) GetVaultKeyProtected(ctx context.Context, callerID, va
 		return nil, fmt.Errorf("getVaultMember: %w", err)
 	}
 
-	vaultKeyProtected, err := s.getVaultKeyProtected(ctx, tx, member.VaultMemberID)
+	vaultKeyProtected, err := s.getVaultKeyProtected(ctx, tx, member.UserID)
 	if err != nil {
 		return nil, fmt.Errorf("getVaultKeyProtected: %w", err)
 	}
@@ -364,13 +363,13 @@ func (s *PostgresStorage) GetVaultKeyProtected(ctx context.Context, callerID, va
 	return vaultKeyProtected, nil
 }
 
-func (s *PostgresStorage) getVaultKeyProtected(ctx context.Context, tx *sql.Tx, memberID string) ([]byte, error) {
+func (s *PostgresStorage) getVaultKeyProtected(ctx context.Context, tx *sql.Tx, userID string) ([]byte, error) {
 	var vaultKeyProtected []byte
 	err := tx.QueryRowContext(ctx, `
 		SELECT vm.vault_key_protected
 		FROM vault_members vm
-		WHERE vm.id = $1
-	`, memberID).Scan(&vaultKeyProtected)
+		WHERE vm.user_id = $1
+	`, userID).Scan(&vaultKeyProtected)
 	if err != nil {
 		return nil, storage.NewInternalError(fmt.Errorf("get vault key protected: %w", err))
 	}
@@ -380,10 +379,10 @@ func (s *PostgresStorage) getVaultKeyProtected(ctx context.Context, tx *sql.Tx, 
 func (s *PostgresStorage) getVaultMember(ctx context.Context, tx *sql.Tx, userID, vaultID string) (*storage.VaultMember, error) {
 	var member storage.VaultMember
 	err := tx.QueryRowContext(ctx, `
-		SELECT vm.id, vm.user_id, vm.vault_id, vm.created_at
+		SELECT vm.user_id, vm.vault_id, vm.created_at
 		FROM vault_members vm
 		WHERE vm.user_id = $1 AND vm.vault_id = $2
-	`, userID, vaultID).Scan(&member.VaultMemberID, &member.UserID, &member.VaultID, &member.CreatedAt)
+	`, userID, vaultID).Scan(&member.UserID, &member.VaultID, &member.CreatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, storage.NewNotFoundError(fmt.Errorf("scan vault member with userID %s and vaultID %s: %w", userID, vaultID, err))
@@ -426,10 +425,9 @@ func (s *PostgresStorage) AddVaultMember(ctx context.Context, callerID, vaultID,
 	}
 
 	member := &storage.VaultMember{
-		VaultMemberID: uuid.NewString(),
-		UserID:        userID,
-		VaultID:       vaultID,
-		CreatedAt:     time.Now(),
+		UserID:    userID,
+		VaultID:   vaultID,
+		CreatedAt: time.Now(),
 	}
 
 	if err := s.createVaultMember(ctx, tx, member, vaultKeyProtected); err != nil {
@@ -445,10 +443,10 @@ func (s *PostgresStorage) AddVaultMember(ctx context.Context, callerID, vaultID,
 
 func (s *PostgresStorage) createVaultMember(ctx context.Context, tx *sql.Tx, member *storage.VaultMember, vaultKeyProtected []byte) error {
 	query := `
-		INSERT INTO vault_members (id, user_id, vault_id, created_at, vault_key_protected)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO vault_members (user_id, vault_id, created_at, vault_key_protected)
+		VALUES ($1, $2, $3, $4)
 	`
-	_, err := tx.ExecContext(ctx, query, member.VaultMemberID, member.UserID, member.VaultID, member.CreatedAt, vaultKeyProtected)
+	_, err := tx.ExecContext(ctx, query, member.UserID, member.VaultID, member.CreatedAt, vaultKeyProtected)
 	if err != nil {
 		return storage.NewInternalError(fmt.Errorf("insert vault member: %w", err))
 	}
@@ -484,7 +482,7 @@ func (s *PostgresStorage) RemoveVaultMember(ctx context.Context, callerID, vault
 		return fmt.Errorf("getVaultMember: %w", err)
 	}
 
-	if err := s.deleteVaultMember(ctx, tx, member.VaultMemberID); err != nil {
+	if err := s.deleteVaultMember(ctx, tx, vaultID, member.UserID); err != nil {
 		return fmt.Errorf("deleteVaultMember: %w", err)
 	}
 
@@ -495,11 +493,11 @@ func (s *PostgresStorage) RemoveVaultMember(ctx context.Context, callerID, vault
 	return nil
 }
 
-func (s *PostgresStorage) deleteVaultMember(ctx context.Context, tx *sql.Tx, memberID string) error {
+func (s *PostgresStorage) deleteVaultMember(ctx context.Context, tx *sql.Tx, vaultID, userID string) error {
 	query := `
-		DELETE FROM vault_members WHERE id = $1
+		DELETE FROM vault_members WHERE vault_id = $1 AND user_id = $2
 	`
-	_, err := tx.ExecContext(ctx, query, memberID)
+	_, err := tx.ExecContext(ctx, query, vaultID, userID)
 	if err != nil {
 		return storage.NewInternalError(fmt.Errorf("delete vault member: %w", err))
 	}
